@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "jsbarcode": "^3.11.5",
-    "lucide-react": "^0.294.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -13,6 +11,10 @@
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
     "ajv": "^8.17.1",
+    "firebase": "^11.6.1",
+    "idb": "^8.0.2",
+    "jsbarcode": "^3.11.5",
+    "lucide-react": "^0.294.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-scripts": "5.0.1",
@@ -32,16 +34,17 @@
     "workbox-streams": "^6.6.0"
   },
   "devDependencies": {
-    "typescript": "^5.3.3",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
-    "tailwindcss": "^3.3.6"
+    "tailwindcss": "^3.3.6",
+    "typescript": "^5.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "rm -rf ./build && ./scripts/update-version.sh && npm run build && npx gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -60,5 +63,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "homepage": "https://jvermeir.github.io/barcode/"
 }

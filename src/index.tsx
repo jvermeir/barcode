@@ -4,6 +4,24 @@ import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import { registerRoute } from 'workbox-routing';
+import { NetworkFirst } from 'workbox-strategies';
+
+registerRoute(
+    ({ request }) => request.mode === 'navigate',
+    new NetworkFirst({
+        cacheName: 'html-cache',
+        networkTimeoutSeconds: 5, // Optional timeout
+        plugins: [
+            {
+                cacheWillUpdate: async ({ response }) => {
+                    // Ensure only valid responses are cached
+                    return response && response.status === 200 ? response : null;
+                },
+            },
+        ],
+    })
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
