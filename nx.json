@@ -1,5 +1,22 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultProject": "frontend",
+  "targetDefaults": {
+    "build": {
+      "cache": true
+    },
+    "test": {
+      "cache": true
+    }
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "test"]
+      }
+    }
+  },
   "plugins": [
     {
       "plugin": "@nx/vite/plugin",

@@ -51,11 +51,17 @@
     "web-vitals": "^5.1.0"
   },
   "scripts": {
-    "start": "nx serve",
-    "build": "nx build",
+    "start": "nx serve frontend",
+    "start:backend": "nx serve backend",
+    "start:frontend": "nx serve frontend",
+    "build": "nx build frontend && nx build backend",
+    "build:backend": "nx build backend",
+    "build:frontend": "nx build frontend",
     "test": "nx test",
-    "deploy": "rm -rf ./build && ./scripts/update-version.sh && npm run build && npx gh-pages -d build",
-    "dev": "nx serve"
+    "test:backend": "nx test backend",
+    "test:frontend": "nx test frontend",
+    "deploy": "rm -rf ./build && ./scripts/update-version.sh && npm run build:frontend && npx gh-pages -d build",
+    "dev": "nx serve frontend"
   },
   "eslintConfig": {
     "extends": [
