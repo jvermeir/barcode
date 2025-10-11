@@ -1,0 +1,33 @@
+API Testing Results
+===================
+
+Date: $(date)
+
+1. Backend Health Check
+-----------------------
+$ curl http://localhost:8080/barcodes/health
+Backend is running!
+
+2. Get All Barcodes (initially empty)
+--------------------------------------
+$ curl http://localhost:8080/barcodes
+[]
+
+3. Add a Test Barcode
+---------------------
+$ curl -X POST http://localhost:8080/barcodes \
+  -H "Content-Type: application/json" \
+  -d '{"name":"test","data":"123456789"}'
+{"name":"test","data":"123456789"}
+
+4. Verify Barcode was Added
+----------------------------
+$ curl http://localhost:8080/barcodes
+[{"name":"test","data":"123456789"}]
+
+5. Frontend Development Server
+-------------------------------
+Frontend is running on http://localhost:3000/
+Vite v7.1.9 ready in 401 ms
+
+RESULT: All services are running correctly! ✓
