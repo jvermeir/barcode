@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "apps/frontend/src/*"
+      ]
     },
     "target": "es5",
     "lib": [
@@ -24,6 +27,6 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src/**/*"
+    "apps/frontend/src/**/*"
   ]
 }
