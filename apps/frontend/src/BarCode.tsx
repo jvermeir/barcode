@@ -4,7 +4,6 @@ import {Button} from "./components/ui/button";
 import {Card, CardContent} from "./components/ui/card";
 import {Barcode, Trash2} from "lucide-react";
 import JsBarcode from "jsbarcode";
-import {openDB} from 'idb';
 
 
 // Import the functions you need from the SDKs you need
@@ -36,51 +35,26 @@ export default function BarCodeApp() {
     const [barcodeData, setBarcodeData] = useState("");
     const [barcodeName, setBarcodeName] = useState("");
     const [barcodes, setBarcodes] = useState<BarCodeItem[]>([]);
-    const DB_NAME = 'barcode-wallet';
-    const STORE_NAME = 'barcodes';
 
     useEffect(() => {
         loadBarcodes().then(setBarcodes);
     }, []);
 
-    useEffect(() => {
-        saveBarcodes(barcodes);
-    }, [barcodes]);
-
-    async function saveBarcodes(barcodes: BarCodeItem[]) {
-        const db = await openDB(DB_NAME, 1, {
-            upgrade(db) {
-                if (!db.objectStoreNames.contains(STORE_NAME)) {
-                    db.createObjectStore(STORE_NAME, {keyPath: 'name'});
-                }
-            },
-        });
-        const tx = db.transaction(STORE_NAME, 'readwrite');
-        const store = tx.objectStore(STORE_NAME);
-        for (const barcode of barcodes) {
-            await store.put(barcode);
-        }
-        await tx.done;
-    }
-
     async function loadBarcodes(): Promise<BarCodeItem[]> {
-        const db = await openDB(DB_NAME, 1, {
-            upgrade(db) {
-                if (!db.objectStoreNames.contains(STORE_NAME)) {
-                    db.createObjectStore(STORE_NAME, {keyPath: 'name'});
-                }
-            },
-        });
-        const tx = db.transaction(STORE_NAME, 'readonly');
-        const store = tx.objectStore(STORE_NAME);
-        return (await store.getAll()) || [];
+        try {
+            const response = await fetch('/api/barcodes');
+            if (!response.ok) {
+                console.error('Failed to load barcodes from backend');
+                return [];
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error loading barcodes:', error);
+            return [];
+        }
     }
 
     const [selectedBarcode, setSelectedBarcode] = useState<BarCodeItem | null>(null);
-
-    useEffect(() => {
-        localStorage.setItem("barcodes", JSON.stringify(barcodes));
-    }, [barcodes]);
 
     useEffect(() => {
         let wakeLock: any = null;
@@ -134,19 +108,52 @@ export default function BarCodeApp() {
         }
     }, [selectedBarcode]);
 
-    const addBarcode = () => {
+    const addBarcode = async () => {
         if (!barcodeName || !barcodeData) return;
         const newBarcode = {name: barcodeName, data: barcodeData};
-        setBarcodes([...barcodes, newBarcode]);
-        setBarcodeName("");
-        setBarcodeData("");
+        
+        try {
+            const response = await fetch('/api/barcodes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newBarcode),
+            });
+            
+            if (!response.ok) {
+                console.error('Failed to add barcode to backend');
+                return;
+            }
+            
+            setBarcodes([...barcodes, newBarcode]);
+            setBarcodeName("");
+            setBarcodeData("");
+        } catch (error) {
+            console.error('Error adding barcode:', error);
+        }
     };
 
-    const deleteBarcode = (index: number, e: React.MouseEvent) => {
+    const deleteBarcode = async (index: number, e: React.MouseEvent) => {
         e.stopPropagation(); // Prevent triggering the barcode selection
-        const newBarcodes = [...barcodes];
-        newBarcodes.splice(index, 1);
-        setBarcodes(newBarcodes);
+        const barcodeToDelete = barcodes[index];
+        
+        try {
+            const response = await fetch(`/api/barcodes/${encodeURIComponent(barcodeToDelete.name)}`, {
+                method: 'DELETE',
+            });
+            
+            if (!response.ok) {
+                console.error('Failed to delete barcode from backend');
+                return;
+            }
+            
+            const newBarcodes = [...barcodes];
+            newBarcodes.splice(index, 1);
+            setBarcodes(newBarcodes);
+        } catch (error) {
+            console.error('Error deleting barcode:', error);
+        }
     };
 
     return (
