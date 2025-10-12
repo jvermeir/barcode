@@ -1,0 +1,50 @@
+=========================================
+Frontend-Backend Integration Test
+=========================================
+
+Test 1: Backend Health Check
+Command: curl http://localhost:8080/barcodes/health
+Response: Backend is running!
+✓ Backend health check PASSED
+
+Test 2: Get All Barcodes (should be empty initially)
+Command: curl http://localhost:8080/barcodes
+Response: []
+✓ Empty list retrieved successfully
+
+Test 3: Add First Barcode
+Command: curl -X POST http://localhost:8080/barcodes -H 'Content-Type: application/json' -d '{"name":"Loyalty Card","data":"123456789"}'
+Response: {"name":"Loyalty Card","data":"123456789"}
+✓ First barcode added successfully
+
+Test 4: Add Second Barcode
+Command: curl -X POST http://localhost:8080/barcodes -H 'Content-Type: application/json' -d '{"name":"Gym Membership","data":"987654321"}'
+Response: {"name":"Gym Membership","data":"987654321"}
+✓ Second barcode added successfully
+
+Test 5: Get All Barcodes (should have 2 items)
+Command: curl http://localhost:8080/barcodes
+Response: [{"name":"Loyalty Card","data":"123456789"},{"name":"Gym Membership","data":"987654321"}]
+✓ Both barcodes retrieved successfully
+
+Test 6: Delete First Barcode
+Command: curl -X DELETE http://localhost:8080/barcodes/Loyalty%20Card
+Response: (no content expected)
+Remaining barcodes: [{"name":"Gym Membership","data":"987654321"}]
+✓ First barcode deleted successfully
+
+Test 7: Delete Second Barcode
+Command: curl -X DELETE http://localhost:8080/barcodes/Gym%20Membership
+Response: (no content expected)
+Final state: []
+✓ All barcodes deleted, list is empty
+
+=========================================
+Integration Test Complete
+=========================================
+
+All backend API endpoints tested successfully!
+The frontend should now be able to:
+  - Load barcodes from the backend
+  - Add new barcodes via POST requests
+  - Delete barcodes via DELETE requests
