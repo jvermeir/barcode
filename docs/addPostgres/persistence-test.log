@@ -1,0 +1,27 @@
+Persistence Test - Testing Data Survives Backend Restart
+==========================================================
+
+Step 1: Check current data in database
+ id |      name      |     data      
+----+----------------+---------------
+  1 | GymCard        | 1234567890123
+  4 | MembershipCard | 5555666677778
+(2 rows)
+
+
+Step 2: Query via API before restart
+[
+    {
+        "id": 1,
+        "name": "GymCard",
+        "data": "1234567890123"
+    },
+    {
+        "id": 4,
+        "name": "MembershipCard",
+        "data": "5555666677778"
+    }
+]
+
+Stopping backend... (will be done manually)
+Please restart the backend and the data should still be there!
