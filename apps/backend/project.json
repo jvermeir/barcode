@@ -19,6 +19,13 @@
         "cwd": "apps/backend"
       }
     },
+    "serve_debug": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "mvn spring-boot:run -Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'",
+        "cwd": "apps/backend"
+      }
+    },
     "test": {
       "executor": "nx:run-commands",
       "options": {
