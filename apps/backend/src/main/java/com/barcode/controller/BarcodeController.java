@@ -1,9 +1,9 @@
 package com.barcode.controller;
 
 import com.barcode.model.BarcodeItem;
+import com.barcode.service.BarcodeService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -11,22 +11,25 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class BarcodeController {
 
-    private List<BarcodeItem> barcodes = new ArrayList<>();
+    private final BarcodeService barcodeService;
+
+    public BarcodeController(BarcodeService barcodeService) {
+        this.barcodeService = barcodeService;
+    }
 
     @GetMapping
     public List<BarcodeItem> getAllBarcodes() {
-        return barcodes;
+        return barcodeService.getAllBarcodes();
     }
 
     @PostMapping
     public BarcodeItem addBarcode(@RequestBody BarcodeItem barcode) {
-        barcodes.add(barcode);
-        return barcode;
+        return barcodeService.addBarcode(barcode);
     }
 
     @DeleteMapping("/{name}")
     public void deleteBarcode(@PathVariable String name) {
-        barcodes.removeIf(b -> b.getName().equals(name));
+        barcodeService.deleteBarcode(name);
     }
 
     @GetMapping("/health")
