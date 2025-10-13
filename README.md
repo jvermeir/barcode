@@ -9,6 +9,7 @@ A Progressive Web App (PWA) for managing and displaying barcodes on your phone. 
 - Offline support with PWA capabilities
 - Local storage with IndexedDB
 - Backend API for barcode management
+- **PostgreSQL database for persistent storage**
 
 ## Project Structure
 
@@ -23,6 +24,7 @@ This is an Nx monorepo containing:
 - Node.js 17+ and npm
 - Java 17+
 - Maven 3.9+
+- PostgreSQL 12+ (for backend database)
 
 ### Installation
 
@@ -31,10 +33,38 @@ This is an Nx monorepo containing:
 npm install --legacy-peer-deps
 ```
 
+### Database Setup
+
+The backend requires PostgreSQL for data persistence. See `docs/addPostgres/DATABASE_SETUP.md` for detailed setup instructions.
+
+**Quick setup:**
+```bash
+# Create database and user
+sudo -u postgres psql << EOF
+CREATE DATABASE barcode;
+CREATE USER barcode_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE barcode TO barcode_user;
+\c barcode
+GRANT ALL ON SCHEMA public TO barcode_user;
+EOF
+
+# Set environment variables
+export DATABASE_URL=jdbc:postgresql://localhost:5432/barcode
+export DATABASE_USERNAME=barcode_user
+export DATABASE_PASSWORD=your_password
+```
+
 ### Development
 
 #### Start Backend
 ```bash
+# With environment variables set
+npx nx serve backend
+
+# Or with inline environment variables
+DATABASE_URL=jdbc:postgresql://localhost:5432/barcode \
+DATABASE_USERNAME=barcode_user \
+DATABASE_PASSWORD=your_password \
 npx nx serve backend
 ```
 Backend will start on http://localhost:8080
@@ -74,7 +104,9 @@ npx nx test frontend
 
 ## Documentation
 
-See `docs/addFrontEnd/README.md` for detailed documentation on the Nx workspace setup and integration.
+- `docs/addFrontEnd/README.md` - Nx workspace setup and integration
+- `docs/addPostgres/DATABASE_SETUP.md` - PostgreSQL database setup guide
+- `docs/addPostgres/TEST_SUMMARY.md` - Database integration test results
 
 ## TODO
 
@@ -82,7 +114,6 @@ See `docs/addFrontEnd/README.md` for detailed documentation on the Nx workspace 
 - align barcode names to the left and delete buttons to the right
 - print version to help debugging
 - test brightness settings
-- integrate frontend with backend API
 
 ## Credits
 
