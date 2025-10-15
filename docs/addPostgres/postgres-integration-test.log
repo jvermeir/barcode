@@ -1,0 +1,45 @@
+PostgreSQL Integration Test
+============================
+
+Step 1: Health Check
+Backend is running!
+
+Step 2: GET all barcodes (initially empty)
+[{"id":1,"name":"GymCard","data":"1234567890123"}]
+
+Step 3: Add GymCard
+{"timestamp":"2025-10-13T19:55:54.593+00:00","status":500,"error":"Internal Server Error","path":"/barcodes"}
+
+Step 4: Add LibraryCard
+{"id":3,"name":"LibraryCard","data":"9876543210987"}
+
+Step 5: Add MembershipCard
+{"id":4,"name":"MembershipCard","data":"5555666677778"}
+
+Step 6: GET all barcodes (should have 3)
+[{"id":1,"name":"GymCard","data":"1234567890123"},{"id":3,"name":"LibraryCard","data":"9876543210987"},{"id":4,"name":"MembershipCard","data":"5555666677778"}]
+
+Step 7: Check database directly
+ id |      name      |     data      
+----+----------------+---------------
+  1 | GymCard        | 1234567890123
+  3 | LibraryCard    | 9876543210987
+  4 | MembershipCard | 5555666677778
+(3 rows)
+
+
+Step 8: Delete LibraryCard
+Deleted
+
+Step 9: GET all barcodes (should have 2)
+[{"id":1,"name":"GymCard","data":"1234567890123"},{"id":4,"name":"MembershipCard","data":"5555666677778"}]
+
+Step 10: Check database after delete
+ id |      name      |     data      
+----+----------------+---------------
+  1 | GymCard        | 1234567890123
+  4 | MembershipCard | 5555666677778
+(2 rows)
+
+
+Test completed successfully!
