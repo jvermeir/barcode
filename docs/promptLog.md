@@ -68,3 +68,23 @@ test if the data is stored correctly and make sure to save the logs of this test
 I'm hoping I'll get a new folder in docs named `docs/addPostgres`, because in the previous change 
 all the logs for my second task got dumped in docs. I wanted a log per task, so I need a folder. 
 Hope this does the trick...
+
+This sort of worked, but the database setup is hard to follow. So i added a docker-compose file to `apps/backend` and 
+set the database connection properties accordingly in the .env file. The file should look like this
+
+```
+REACT_APP_VERSION=16
+DATABASE_URL=jdbc:postgresql://localhost:5432/barcodes
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=<set your password here>
+```
+
+Starting the backend from the root of this project works like this:
+
+```bash
+# start the database
+(cd apps/backend/ && docker-compose up -d)
+# start the backend
+npx nx serve backend
+```
+
