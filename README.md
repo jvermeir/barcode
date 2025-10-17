@@ -102,8 +102,22 @@ npx nx test frontend
 - `POST /barcodes` - Add a barcode
 - `DELETE /barcodes/{name}` - Delete a barcode
 
+## Cloud Deployment
+
+The application can be deployed to OVH Cloud using Terraform:
+
+```bash
+cd terraform
+./deploy.sh
+```
+
+See the [Deployment Guide](docs/DEPLOYMENT_GUIDE.md) for complete instructions on deploying to OVH Cloud.
+
 ## Documentation
 
+- `docs/DEPLOYMENT_GUIDE.md` - Complete OVH Cloud deployment guide
+- `terraform/README.md` - Terraform infrastructure documentation
+- `terraform/TERRAFORM_GUIDE.md` - Detailed Terraform module reference
 - `docs/addFrontEnd/README.md` - Nx workspace setup and integration
 - `docs/addPostgres/DATABASE_SETUP.md` - PostgreSQL database setup guide
 - `docs/addPostgres/TEST_SUMMARY.md` - Database integration test results
