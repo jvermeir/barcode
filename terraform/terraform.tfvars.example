@@ -1,0 +1,36 @@
+# Example terraform.tfvars file for production environment
+# Copy this file to terraform.tfvars and fill in your actual values
+
+# OVH Authentication - Get these from OVH API console
+# https://api.ovh.com/createToken/
+ovh_endpoint           = "ovh-eu"  # or ovh-ca, ovh-us depending on your account
+ovh_application_key    = "your-application-key"
+ovh_application_secret = "your-application-secret"
+ovh_consumer_key       = "your-consumer-key"
+ovh_project_id         = "your-project-id"
+
+# Region configuration
+ovh_region = "GRA11"  # Gravelines, France - choose based on your needs
+# Available regions: GRA11, GRA9, GRA7, SBG5, BHS5, DE1, UK1, WAW1, etc.
+
+# Environment
+environment = "production"
+
+# Networking
+network_name = "barcode-network"
+subnet_cidr  = "10.0.0.0/16"
+
+# Kubernetes Cluster
+cluster_name       = "barcode-cluster"
+kubernetes_version = "1.28"  # Check OVH for available versions
+backend_image      = "ghcr.io/jvermeir/barcode-backend:latest"
+backend_replicas   = 2
+
+# Database
+db_name    = "barcode"
+db_version = "15"      # PostgreSQL version
+db_plan    = "essential"  # Options: essential, business, enterprise
+
+# Frontend Storage
+frontend_bucket_name = "barcode-frontend"
+enable_cdn          = false  # Set to true for CDN delivery
