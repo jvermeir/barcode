@@ -20,10 +20,10 @@ WARNINGS=0
 
 # Function to check command exists
 check_command() {
-    if command -v $1 &> /dev/null; then
+    if command -v "$1" &> /dev/null; then
         echo -e "  ${GREEN}✓${NC} $1 is installed"
         if [ ! -z "$2" ]; then
-            VERSION=$($1 $2 2>&1 | head -n1)
+            VERSION=$("$1" $2 2>&1 | head -n1)
             echo "    Version: $VERSION"
         fi
     else
@@ -118,11 +118,11 @@ fi
 
 echo -e "\n${BLUE}6. Checking Network Access${NC}"
 echo "-------------------------"
-if ping -c 1 api.ovh.com &> /dev/null; then
+if curl -s --connect-timeout 5 https://api.ovh.com/1.0/ping &> /dev/null; then
     echo -e "  ${GREEN}✓${NC} Can reach OVH API (api.ovh.com)"
 else
     echo -e "  ${YELLOW}!${NC} Cannot reach OVH API"
-    echo "    Check internet connection"
+    echo "    Check internet connection and firewall settings"
     ((WARNINGS++))
 fi
 

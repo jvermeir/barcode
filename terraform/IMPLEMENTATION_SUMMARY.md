@@ -233,12 +233,14 @@ curl -I $(terraform output -raw frontend_bucket_url)/index.html
 
 ## Cost Estimates
 
-| Environment | Monthly Cost |
-|-------------|--------------|
+**Note**: Costs are approximate and in EUR. Actual costs may vary based on region, usage, and OVH pricing changes. Always check [OVH Official Pricing](https://www.ovhcloud.com/en/public-cloud/prices/) for current rates.
+
+| Environment | Monthly Cost (EUR) |
+|-------------|-------------------|
 | Development | €55-65 |
 | Production | €70-85 |
 
-Breakdown:
+Breakdown (approximate):
 - Kubernetes: €35-45
 - PostgreSQL: €15-25
 - Object Storage: €0.10-5
